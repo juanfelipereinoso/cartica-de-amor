@@ -1,0 +1,118 @@
+:root{
+  --paper:#f5e8dc;
+  --ink:#5c4033;
+  --accent:#ff6699;
+  --shadow:0 10px 30px rgba(0,0,0,.12);
+  --card:#ffffff;
+  --ring:rgba(0,0,0,.08);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;width:100%;overflow-x:hidden}
+body{
+  display:flex;justify-content:center;align-items:flex-start;
+  padding:18px;
+  background:radial-gradient(1200px 600px at 50% -10%,#fff 10%,var(--paper) 60%);
+  color:var(--ink); font-family:'Poppins',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+}
+
+/* ===== CONTENEDOR PRINCIPAL ===== */
+.card{
+  width:min(1100px,100%);
+  background:var(--paper);
+  border-radius:24px;
+  border:1px solid rgba(0,0,0,.06);
+  box-shadow:var(--shadow);
+  overflow:hidden;
+}
+
+/* ===== LAYOUT RESPONSIVE ===== */
+.canvas-wrap{
+  display:grid;
+  grid-template-columns: 1fr;      /* móvil: 1 columna */
+  gap:12px;
+  padding:14px;
+  background:var(--paper);
+}
+
+/* Canvas box */
+.canvas-box{
+  position:relative;
+  padding:10px 12px 0;
+  border-radius:20px;
+  background:var(--paper);
+  border:1px solid var(--ring);
+}
+
+/* Canvas estable (alto lo fija JS con ResizeObserver) */
+#loveTree{
+  width:100%;
+  height:auto;
+  aspect-ratio:16/9;
+  min-height:260px;
+  display:block;
+  background:var(--paper);
+  border:none;
+  border-radius:18px;
+}
+
+/* Tarjeta derecha */
+.overlay{
+  display:flex;justify-content:center;
+}
+.overlay-inner{
+  width:100%;
+  background:var(--card);
+  border:1px solid var(--ring);
+  border-radius:18px;
+  padding:18px 20px;
+  box-shadow:0 6px 18px rgba(0,0,0,.08);
+}
+.overlay h2{font-size:22px;font-weight:800;margin-bottom:10px}
+.type{white-space:pre-line;line-height:1.55;margin:4px 0 12px}
+.bears{width:180px;max-width:60%;border-radius:12px;margin:10px 0 14px}
+.counter-wrap small{display:block;color:#6b6b6b;font-size:13px;margin-bottom:4px}
+#counter{font-weight:600}
+
+/* Botones (versión para móvil y fallback) */
+.actions{
+  display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:14px;
+}
+.btn{
+  border:0; padding:10px 16px; border-radius:999px; font-weight:700; cursor:pointer;
+  box-shadow:var(--shadow); transition:.2s; color:#fff; background:var(--accent);
+}
+.btn:hover{transform:translateY(-2px)}
+.btn.secondary{background:#ffb6c1;color:#5c4033}
+
+/* ===== BARRA FLOTTANTE EN PC ===== */
+.actions-bar{
+  grid-column:1 / -1;                     /* ocupa ancho completo del grid */
+  display:flex; justify-content:center;
+}
+.actions-pill{
+  display:flex; gap:12px; padding:10px 14px; border-radius:999px;
+  background:rgba(255,255,255,.95);
+  border:1px solid var(--ring);
+  box-shadow:0 10px 22px rgba(0,0,0,.15);
+  transform:translateY(-26px);            /* se superpone al borde inferior del canvas */
+  backdrop-filter:blur(4px);
+}
+
+/* ===== DESKTOP: 2 columnas ===== */
+@media (min-width:960px){
+  .canvas-wrap{
+    grid-template-columns: 1.25fr 0.9fr;  /* left:canvas | right:card */
+    align-items:start;
+    padding:18px;
+  }
+  .overlay-inner{position:sticky; top:18px} /* la tarjeta acompaña el scroll */
+  /* Oculta los botones internos y usa la barra flotante */
+  .overlay .actions{display:none}
+}
+
+/* ===== MÓVIL: 1 columna, sin flotante ===== */
+@media (max-width:959.98px){
+  .actions-bar{display:none}              /* en móvil, botones dentro de la tarjeta */
+  #loveTree{min-height:220px; aspect-ratio: 1/1}
+}
